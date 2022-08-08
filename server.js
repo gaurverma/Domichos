@@ -25,8 +25,6 @@ let mongoStore = new MongoDbStore({
     collection: 'sessions'
 });
 
-app.use(express.static('public'));
-app.use(express.json());
 app.use(session({
     secret: 'thisissomevalue',
     resave: false,
@@ -35,6 +33,10 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }))
 app.use(flash());
+app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
 // Global middleware
 app.use((req, res, next) => {
     res.locals.session = req.session
