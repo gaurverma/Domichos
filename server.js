@@ -8,7 +8,9 @@ const expressLayout = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('express-flash');
-const MongoDbStore = require('connect-mongo')(session)
+const MongoDbStore = require('connect-mongo')(session);
+const passport = require('passport');
+const passportInit = require('./app/config/passport');
 
 // Database connection
 const url = "mongodb://0.0.0.0:27017/pizaa";
@@ -32,6 +34,13 @@ app.use(session({
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }))
+
+//Passport config
+passportInit(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use(flash());
 app.use(express.static('public'));
 app.use(express.json());
